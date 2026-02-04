@@ -368,12 +368,21 @@ app.get('/api/stats', async (req, res) => {
 
 });
 
-// server startup
-app.listen(PORT, () => {
-  console.log(`Backend server running on port ${PORT}`);
-  console.log(`Using MEMORY storage for uploads - no uploads folder created!`);
-  console.log(`CSV/TSV Upload endpoint: http://localhost:${PORT}/api/upload`);
-});
+// export helper functions AND app
+module.exports = {
+  cleanString,
+  toIntOrNull,
+  app
+};
+
+// only start server if NOT in test environment
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Backend server running on port ${PORT}`);
+    console.log(`Using MEMORY storage for uploads - no uploads folder created!`);
+    console.log(`CSV/TSV Upload endpoint: http://localhost:${PORT}/api/upload`);
+  });
+}
 
 // db config (keep at bottom or move to separate file)
 // uses env variables with fallback defaults for local development
